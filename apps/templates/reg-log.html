@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ falgs }}
+{% endblock %}
+
+{% block body %}
+    {% block content %}
+    <div class="login-logo"><h1>Elm商家管理系统</h1></div>
+    <div class="login-box">
+        <form class="layui-form layui-form-pane" action="" method="post">
+            <h3>{{ flags }}你的帐号</h3>
+                    {% if form.data|length == 2 %}
+                        <div class="layui-form-item"><br></div>
+                    {% endif %}
+                    {% for item in form %}
+                        {% if loop.first %}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label login-form">
+                                    <i class="iconfont">&#xe6b8;</i>
+                                </label>
+                                <div class="layui-input-inline login-inline">
+                                    {{ item }}
+                                </div>
+                                    <span>{{ item.errors[0] }}</span>
+                            </div>
+                        {% else %}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label login-form">
+                                    <i class="iconfont">&#xe82b;</i>
+                                </label>
+                                <div class="layui-input-inline login-inline">
+                                    {{ item }}
+                                </div>
+                                    <span>{{ item.errors[0] }}</span>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% if form.data|length == 2 %}
+                        <div class="layui-form-item"><br></div>
+                    {% endif %}
+            <div class="form-actions">
+                <button class="btn btn-warning pull-right" lay-submit lay-filter="login"  type="submit">{{ flags }}</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <script src="https://cdn.staticfile.org/Plupload/2.1.1/moxie.js"></script>
+    <script src="https://cdn.staticfile.org/Plupload/2.1.1/plupload.dev.js"></script>
+    <script src="https://cdn.staticfile.org/qiniu-js-sdk/1.0.14-beta/qiniu.js"></script>
+    <script src="{{ url_for('static', filename='upload-js/itqiniu.js') }}"></script>
+{#        <script src="{{ url_for('static', filename='upload-js/img_upload.js') }}"></script>#}
+
+    <style>
+        .lens{
+            color: #0C0C0C;
+            width: 350%;
+        }
+        .col{
+            color: #41d5ee;
+        }
+    </style>
+
+{% endblock %}
+{% block content %}
+ <!-- 中部开始 -->
+     <h1 class="logo">{{ flags }}商铺信息</h1>
+    <div class="wrapper">
+        <!-- 右侧主体开始 -->
+
+<div class="page-content">
+  <div class="content">
+    <!-- 右侧内容框架，更改从这里开始 -->
+    <form action="" method="post" enctype="multipart/form-data" class="layui-form">
+        {% for item in form %}
+            {% if item.id == 'csrf_token' %}
+                {{ item }}
+            {% elif item.id == 'image-input' %}
+                <div class="layui-form form-group">
+                    {{ item.label(class_="col-sm-3 control-label") }}
+                    <div class="col-sm-3">
+                        {{ item }}
+{#                        <input type="file" value="上传图片">#}
+{#                        <img src="{{ item.data }}" width="50px" id="image-show">#}
+
+{#        <button id="upload-btn" class="btn btn-default form-control">上传图片</button>#}
+                    </div>
+
+{#                    <div class="col-sm-6">#}
+{#                        {{ item }}#}
+{#                        <img src="{{ item.data }}" width="50px" id="image-show">#}
+{#                    </div>#}
+                </div>
+
+
+            {% else %}
+                <div class="layui-form form-group">
+                {{ item.label(class_="col-sm-3 control-label") }}
+                </div>
+                <div class="layui-input-inline">
+                {{ item }}
+                <span class="x-red">{{ item.errors[0] }}</span>
+            </div>
+            {% endif %}
+        {% endfor %}
+
+    <div class="layui-form form-group">
+    <div class="col-sm-3">
+    <input  name="goods_img" type="file" value="上传图片">
+    <img src="{{ MEDIA_URL }}{{ goods_img }}" width="50px" id="image-show">
+    </div>
+    </div>
+
+
+        <div class="layui-form-item">
+            <button  class="layui-btn" lay-filter="add" lay-submit="">提交
+            </button>
+        </div>
+    </form>
+    <!-- 右侧内容框架，更改从这里结束 -->
+  </div>
+</div>
+        <!-- 右侧主体结束 -->
+    </div>
+    <!-- 中部结束 -->
+
+{% endblock %}
+{% block footer_js %}
+    <script>
+
+window.onload = function () {
+    itqiniu.setUp({
+        'domain': 'http://pom7qnm9g.bkt.clouddn.com/',
+        'browse_btn': 'upload-btn',
+        'uptoken_url': '/uptoken/',
+        'success': function (up, file, info) {
+            var image_url = file.name;
+            var image_input = document.getElementById('image-input');
+            image_input.value = image_url;
+
+            var img = document.getElementById('image-show');
+            img.setAttribute('src', image_url);
+        }
+    });
+};
+
+    </script>
+
+
+
+{% endblock %}
+
